@@ -1,2 +1,78 @@
-#main {
+#error-message{
+    color:red;
+    font-weight: 600;
 }
+
+#main{
+    display: grid;
+    grid-template-areas:
+    "header header header"
+    "current current previous"
+    "days days .";
+    grid-gap: 5px;
+    max-width: 800px;
+    width: 75%;
+    margin: 0 auto;
+}
+
+#header{
+    grid-area:header;
+    text-align: center;
+    border: 1px solid black;
+    padding-bottom: 30px;
+}
+
+#current-location-data{
+    grid-area: current;
+    text-align: center;
+    border: 1px solid black;
+    padding-bottom: 10px;
+    margin: 10px;
+}
+
+ul#current-location-list-items li{
+    list-style-type: none;
+    align-items: center;
+    margin: 5px;
+    padding: 2px;
+}
+
+#previous-searches-data{
+    grid-area: previous;
+}
+
+#previous-searches-data li {
+    margin: 2px;
+    padding: 5px;
+}
+
+#day-data{
+    grid-area: days;
+    display: grid;
+    grid-template-areas: 
+    "today tomorrow day-after-tomorrow";
+    grid-gap: 5px;
+}
+
+#todays-data{
+    grid-area: today;
+    text-align: center;
+}
+
+#tomorrow-data{
+    grid-area: tomorrow;
+    text-align: center;
+}
+
+#day-after-tomorrow-data{
+    grid-area: day-after-tomorrow;
+    text-align: center;
+}
+
+ul#todays-temperature-data.list-items, ul#tomorrow-temperature-data.list-items, ul#day-after-tomorrow-temperature-data.list-items{
+    list-style-type: none;
+    margin: 5px;
+    align-items: center;
+    padding: 2px;
+}
+
