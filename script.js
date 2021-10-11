@@ -1,17 +1,12 @@
 let baseURL = "https://wttr.in/";
 // Detroit
 // " ?format=j1";
-let form = document.querySelector("form#weather-selector");
-
-
-form.addEventListener("submit", (e)=>{
-    e.preventDefault();
-    let userInput = e.target["input"].value;
+function callBackData (cityInput, shouldAdd){
     let errMessage = document.querySelector("#error-message")
 
-    // console.log(userInput.join(" "))
+    console.log(cityInput)
 
-    let url = `${baseURL}${userInput}?format=j1`
+    let url = `${baseURL}${cityInput}?format=j1`
     console.log(url)
 
     if(input !== ""){
@@ -19,36 +14,51 @@ form.addEventListener("submit", (e)=>{
         .then((res)=> {
             return res.json();
             }).then((data) =>{
+
                 console.log(data);
-                let currentLocation = document.querySelector("#current-location-data")
-                currentLocation.innerHTML = 
+                let input = document.querySelector("#input");
+                input.value = ""; 
+                let inputArea = data.nearest_area[0].areaName[0].value;
+                let inputState = data.nearest_area[0].region[0].value;
+                let inputCountry = data.nearest_area[0].country[0].value;
+                let inputTemp = data.current_condition[0].FeelsLikeF;
+
+                let todayAverage = data.weather[0].avgtempF;
+                let todayMax = data.weather[0].maxtempF;
+                let todayMin = data.weather[0].mintempF;
+
+                let tomorrowAverage = data.weather[1].avgtempF;
+                let tomorrowMax = data.weather[1].maxtempF;
+                let tomorrowMin = data.weather[1].mintempF;
+
+                let afterAverage = data.weather[2].avgtempF;
+                let afterMax = data.weather[2].maxtempF;
+                let afterMin = data.weather[2].mintempF;
+
+                let currentLocation = document.querySelector("#current-location-data");
+
+            currentLocation.innerHTML = 
                 `<div id="city-data-title">
-                <h3>New York City</h3>
-            </div>
+                <h3>${inputArea}</h3>
             <ul id="current-location-list-items">
-                <li id="area-data">Area: Queens</li>
-                <li id="region-data">State: New York</li>
-                <li id="country-data">Country: USA</li>
-                <li id="feels-like-data">Currently: Feels Like 92°</li>
-            </ul>`
-            let previousSearch = document.querySelector("#previous-searches-data")
-                previousSearch.innerHTML = 
-                `<h3>Previous Searches</h3>
-                <div id="previous-searches-data-list">
-                    <ul id="previous-searches-data-list-items">
-                        <li>Melbourne - 37°F</li>
-                    </ul>
-                </div>`
+                <li id="area-data"><strong>Area:</strong> ${inputArea}</li>
+                <li id="region-data"><strong>State:</strong> ${inputState}</li>
+                <li id="country-data"><strong>Country:</strong> ${inputCountry}</li>
+                <li id="feels-like-data"><strong>Currently:</strong> Feels Like ${inputTemp}°F</li>
+            </ul>
+            </div>
+            <div id ="day-data"></div>
+            `
             let dayData = document.querySelector("#day-data");
-                dayData.innerHTML = 
-                `<div id="todays-data">
+            dayData.innerHTML =
+            `<div id="todays-data">
                 <div id="todays-data-title">
                     <h3>Today<h3>
                 </div>
                 <ul id="todays-temperature-data" class="list-items">
-                    <li><strong>Average Temperature:</strong> 54°F </li>
-                    <li><strong>Max Temperature:</strong> 60°F </li>
-                    <li><strong>Min Temperature:</strong> 49°F </li>
+                    <li><strong>Average Temperature:</strong> ${todayAverage}°F </li>
+                    <li><strong>Max Temperature:</strong> ${todayMax}°F </li>
+                    <li><strong>Min Temperature:</strong> ${todayMin}°F </li>
                 </ul>
             </div>
             <div id="tomorrow-data">
@@ -56,9 +66,9 @@ form.addEventListener("submit", (e)=>{
                     <h3>Tomorrow<h3>
                 </div>
                 <ul id="tomorrow-temperature-data" class="list-items">
-                    <li><strong>Average Temperature: </strong> 54°F </li>
-                    <li><strong>Max Temperature: </strong> 60°F </li>
-                    <li><strong>Min Temperature: </strong> 49°F </li>
+                    <li><strong>Average Temperature: </strong> ${tomorrowAverage}°F </li>
+                    <li><strong>Max Temperature: </strong> ${tomorrowMax}°F </li>
+                    <li><strong>Min Temperature: </strong> ${tomorrowMin}°F </li>
                 </ul>
             </div>
             <div id="day-after-tomorrow-data">
@@ -66,14 +76,55 @@ form.addEventListener("submit", (e)=>{
                     <h3>Day After Tomorrow<h3>
                 </div>
                 <ul id="day-after-tomorrow-temperature-data" class="list-items">
-                    <li><strong>Average Temperature: </strong> 54°F </li>
-                    <li><strong>Max Temperature: </strong> 60°F </li>
-                    <li><strong>Min Temperature: </strong> 49°F </li>
+                    <li><strong>Average Temperature: </strong> ${afterAverage}°F </li>
+                    <li><strong>Max Temperature: </strong> ${afterMax}°F </li>
+                    <li><strong>Min Temperature: </strong> ${afterMin}°F </li>
                 </ul>
             </div>`
-            }).catch((err)=>{
+
+            if(shouldAdd){
+                let preSearchData = document.querySelector(".history");
+                let preSearchListContainer = document.createElement("div");
+                preSearchListContainer.classList.add("previous-searches-data-container");
+                let ul = document.createElement("ul");
+                let li = document.createElement("li");
+                li.textContent = ` - ${inputTemp}˚F`
+                let anchorTag = document.createElement("a");
+                anchorTag.textContent = inputArea;
+                anchorTag.setAttribute("href", "#")
+                
+                let placeholder = document.querySelector("#previous-searches-place");
+                li.prepend(anchorTag)
+    
+                if(placeholder){
+                    placeholder.remove();
+                }
+                ul.append(li);
+                preSearchData.append(ul);
+    
+                anchorTag.addEventListener("click", (event)=>{
+                    console.log(event.target.textContent);
+                    callBackData(event.target.textContent, false)
+                })
+            }
+            
+
+            })
+            .catch((err)=>{
                 console.log(err);
             })
+    } else {
+        errMessage.textContent = "Please Choose an Area."
     }
 
+}
+
+
+let form = document.querySelector("form#weather-selector");
+
+
+form.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    let userInput = e.target["input"].value;
+    callBackData(userInput, true)
 })

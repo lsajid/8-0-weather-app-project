@@ -30,8 +30,6 @@ h1, label {
 #current-location-data{
     grid-area: current;
     text-align: center;
-    border: 2px solid rgba(59, 164, 164, 0.906);
-    background-color: rgb(245, 241, 241);
     padding-bottom: 10px;
     padding-top: 10px;
     padding-left: 0;
@@ -45,13 +43,13 @@ h1, label {
     list-style-type: none;
 }
 
-/* ul#current-location-list-items li{
+ul#current-location-list-items li{
     list-style-type: none;
     align-items: center;
     margin: 5px;
     padding-left: 0;
     line-height: 2;
-} */
+}
 
 #previous-searches-data{
     grid-area: previous;
@@ -62,7 +60,9 @@ h1, label {
     margin: 2px;
     padding: 5px;
 }
-
+#previous-searches-data-list-items{
+    cursor: pointer;
+}
 #day-data{
     grid-area: days;
     display: grid;
@@ -74,7 +74,6 @@ h1, label {
 #day-data > *{
     line-height: 25pt;
 }
-
 
 #todays-data{
     grid-area: today;
@@ -96,4 +95,9 @@ ul#todays-temperature-data.list-items, ul#tomorrow-temperature-data.list-items, 
     margin: 5px;
     align-items: center;
     padding: 2px;
+}
+
+#city-data-title {
+    border: 2px solid rgba(59, 164, 164, 0.906);
+    background-color: rgb(245, 241, 241);
 }
