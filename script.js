@@ -14,7 +14,6 @@ function callBackData (cityInput, shouldAdd){
         .then((res)=> {
             return res.json();
             }).then((data) =>{
-
                 console.log(data);
                 let input = document.querySelector("#input");
                 input.value = ""; 
@@ -35,7 +34,7 @@ function callBackData (cityInput, shouldAdd){
                 let afterMax = data.weather[2].maxtempF;
                 let afterMin = data.weather[2].mintempF;
 
-                let currentLocation = document.querySelector("#current-location-data");
+                let currentLocation = document.querySelector(".display");
 
             currentLocation.innerHTML = 
                 `<div id="city-data-title">
@@ -124,6 +123,7 @@ let form = document.querySelector("form#weather-selector");
 
 
 form.addEventListener("submit", (e)=>{
+    console.log(e.target)
     e.preventDefault();
     let userInput = e.target["input"].value;
     callBackData(userInput, true)
